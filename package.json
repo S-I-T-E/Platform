@@ -1,0 +1,13 @@
+{  
+  "name": "SITE",
+  "version": "0.0.1",
+  "description": "I don't know what to put here.",
+  "main": "server.js",
+  "repository": "",
+  "author": "Various>",
+  "dependencies": {
+    "express": "~3.2.6",
+    "mongodb": "~2.6"
+
+  }
+}
