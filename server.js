@@ -4,6 +4,7 @@ const server = express();
 const parseurl = require('parseurl');
 const session = require('express-session');
 const mongoClient = require('mongodb').MongoClient;
+const MongoStore = require('connect-mongo')(express);
 
 
 const hostname = process.env.IP;
@@ -16,6 +17,7 @@ server.use(express.static('client'))
 server.use(session({
   secret: 'Orange and red keyboard fish',
   resave: false,
+  store: new MongoStore({ url: 'mongodb://localhost:27017/databasegoeshere' }),
   saveUninitialized: true
 }))
 
