@@ -42,8 +42,18 @@ server.get('/login', function(req, res) {
   res.sendfile('client/login.html')
 })
 
+server.post('/login', function(req, res){
+  userSession.email = req.body.emailaddress;
+})
+
 server.get('/dashboard', function(req, res) {
-  res.send('TODO');
+  userSession = req.session;
+  if (!userSession.email) {
+    res.redirect('/login');
+  }
+  else {
+    res.sendfile('client/dashboard.html')
+  }
 })
 
 server.listen(port, function() {
