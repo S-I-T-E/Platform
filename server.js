@@ -5,6 +5,7 @@ const parseurl = require('parseurl');
 const session = require('express-session');
 const mongoClient = require('mongodb').MongoClient;
 const MongoStore = require('connect-mongo')(express);
+var bodyParser = require('body-parser');
 
 
 const hostname = process.env.IP;
@@ -13,6 +14,8 @@ const port = process.env.PORT;
 var userSession;
 
 server.use(express.static('client'))
+server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({ extended: true }));
 
 server.use(session({
   secret: 'Orange and red keyboard fish',
@@ -22,7 +25,8 @@ server.use(session({
 }))
 
 var logger = function(req, res, next) {
-  console.log('Page requested: '+req.path);
+  var date = new Date().toLocaleString();
+  console.log(date+' - Page requested: '+req.path);
   next();
 }
 
@@ -43,7 +47,14 @@ server.get('/login', function(req, res) {
 })
 
 server.post('/login', function(req, res){
+  userSession = req.session;
   userSession.email = req.body.emailaddress;
+  res.redirect('/');
+})
+
+server.get('/logout', function(req, res) {
+  req.session.destroy();
+  res.redirect('/')
 })
 
 server.get('/dashboard', function(req, res) {
