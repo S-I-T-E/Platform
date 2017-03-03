@@ -41,7 +41,7 @@ server.get('/', function(req, res) {
     res.redirect('/login');
   }
   else {
-    res.redner('dashboard')
+    res.render('dashboard',{title:'This title was rendered from Node!'})
   }
 })
 
@@ -115,7 +115,7 @@ server.get('/dashboard', function(req, res) {
     res.redirect('/login');
   }
   else {
-    res.render('dashboard')
+    res.redirect('/')
   }
 })
 
