@@ -15,6 +15,7 @@ const saltRounds = 4;
 
 var userSession;
 
+server.set('view engine', 'pug')
 server.use(express.static('client'))
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
@@ -40,12 +41,12 @@ server.get('/', function(req, res) {
     res.redirect('/login');
   }
   else {
-    res.sendfile('client/dashboard.html')
+    res.redner('dashboard')
   }
 })
 
 server.get('/login', function(req, res) {
-  res.sendfile('client/login.html')
+  res.render('login')
 })
 
 server.post('/login', function(req, res){
@@ -53,7 +54,7 @@ server.post('/login', function(req, res){
   mongoClient.connect("mongodb://localhost:27017/logins",function(error,db){
     if(!error){
       console.log("Connected successfully to MongoDB server");
-      console.log("LOGIN INFORMATION: "+JSON.stringify(req.body));
+      // console.log("LOGIN INFORMATION: "+JSON.stringify(req.body));
       var collection = db.collection('main');
       collection.findOne({username:req.body.username.toLowerCase()}, function(error,user){
           if(user !== null){
@@ -79,7 +80,7 @@ server.post('/login', function(req, res){
 })
 
 server.get('/register', function(req, res) {
-  res.sendfile('client/register.html')
+  res.render('register')
 })
 
 server.post('/register', function(req, res){
@@ -114,7 +115,7 @@ server.get('/dashboard', function(req, res) {
     res.redirect('/login');
   }
   else {
-    res.sendfile('client/dashboard.html')
+    res.render('dashboard')
   }
 })
 

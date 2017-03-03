@@ -1,0 +1,46 @@
+extend templates/navbar.pug
+
+block titleconfig
+    title SITE | Dashboard
+
+block navconfig
+    .brand-logo.center Dashboard
+block content
+    main
+        .parent1
+            .child1-1
+                h2.center Schedule
+                
+                table.striped.scheduleTable
+                    thead
+                        tr 
+                            th Class
+                            th.right-align Time
+                    tbody
+                        tr
+                            td Hon Geometry
+                            td.right-align 8:00am
+                        tr  
+                            td Algebra I
+                            td.right-align 10:30am
+                        tr 
+                            td Geometry
+                            td.right-align 12:00pm
+                        tr 
+                            td Other
+                            td.right-align 2:00pm
+                        tr
+                            td Just filling
+                            td.right-align 4:30pm
+            .child1-2
+                text fail
+                    
+        .parent2
+            .child2-1
+                text test
+            .child2-2
+                text fail
+    
+        script(src="js/jquery.js")
+        script(src="js/materialize.js")
+        script(src="js/script.js")

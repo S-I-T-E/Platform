@@ -1,0 +1,50 @@
+extend htmlboilerplate.pug
+
+block navbar
+  header
+    ul#slide-out.side-nav
+      li
+        .userView
+          .background
+            img(src="images/office.jpg")
+          a(href="#!user")
+            img.circle(src="images/yuna.jpg")
+          a(href="#!name")
+            span.white-text.name John Doe
+          a(href="#!email")
+            span.white-text.email jdandturk@gmail.com
+      li
+        a(href="#!")
+          i.material-icons cloud
+          First Link With Icon
+      li
+        a(href="#!") Second Link
+      li
+        .divider 
+      li
+        a.subheader Subheader
+      li
+        a.waves-effect(href="#!") Third Link With Waves
+    nav
+      .nav-wrapper.z-depth-3
+        block navconfig
+          p hello
+        ul#nav-mobile.right
+          li
+            a(href="#")
+              i.material-icons notifications
+          li
+            a.dropdown-button(href="#" data-activates='settingDropdown' data-constrainWidth="false" data-alignment="right" data-gutter="12" data-beloworigin="true")
+              i.material-icons person
+            <ul id='settingDropdown' class='dropdown-content'>
+              <li><a href="#!">Account</a></li>
+              <li class="divider"></li>
+              <li><a href="#!">Settings</a></li>
+              <li class="divider"></li>
+              <li><a href="#!">Logout</a></li>
+            </ul>
+            
+        ul#nav-mobile.left
+          li
+            a(href="#")
+              i.material-icons.button-collapse(data-activates="slide-out") menu 

@@ -1,0 +1,21 @@
+extend templates/htmlboilerplate.pug
+
+block titleconfig
+    title SITE| Login
+
+block content
+  main
+    .container
+        .row
+            .col.s12.m8.l6.offset-l3.offset-m2
+                #login-card
+                  img.responsive-img.login-img(src="http://placehold.it/500x250")
+                  form(action="/login" method="post")
+                    .login-inputs
+                      i.material-icons.icon-prefix person_outline
+                      input.u-full-width.prefix(type="text" placeholder="Username" name="username" required)
+                      i.material-icons.icon-prefix lock_outline
+                      input.u-full-width.prefix(type="password" placeholder="Password" name="password" required)
+                      a.login-bottom-text.left Forgot your login?
+                      button.btn.waves-effect.waves-light.light-blue.right-lala(type="submit" name="action") Submit 
+block foot
