@@ -1,0 +1,45 @@
+extend templates/htmlboilerplate.pug
+
+block titleconfig
+    title SITE| Register
+
+block content
+  main
+    .container
+        .row
+            .col.s12.m8.l6.offset-l3.offset-m2
+                #login-card
+                  img.responsive-img.login-img(src="http://placehold.it/500x250")
+                  form(action="/register" method="post")
+                    .login-inputs
+                      .row
+                        .col.s6
+                          i.material-icons.icon-prefix person_outline
+                          input.u-full-width.prefix(placeholder="First Name" name="first_name" type="text" required)
+                        .col.s6
+                          i.material-icons.icon-prefix people_outline
+                          input.u-full-width.prefix(placeholder="Last Name" name="last_name" type="text" required)
+                      .row
+                        .col.s12
+                          select(name="test")
+                            option(value="0" disabled selected) Select your access level
+                            option(value='1') Teacher
+                            option(value='2') Office Staff
+                            option(value='3') Administration
+                          label Materialize Select
+                      .row
+                        .col.s12
+                          i.material-icons.icon-prefix school
+                          input.u-full-width.prefix(type="text" placeholder="EMPLID (This is your username for now)" name="username" required)
+                      .row
+                        .col.s12
+                          i.material-icons.icon-prefix lock_outline
+                          input.u-full-width.prefix(type="password" placeholder="Password" name="password" required)
+                      .row
+                        .col.s12
+                          a.login-bottom-text.left Don't have an ID?
+                      .row
+                        .col.s12
+                          button.btn.waves-effect.waves-light.light-blue.right-lala(type="submit" value="Register") Register 
+block foot
+  
