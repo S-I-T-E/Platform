@@ -10,7 +10,7 @@ var bcrypt = require('bcryptjs');
 
 
 const hostname = process.env.IP;
-const port = process.env.PORT;
+const port = 8080;
 const saltRounds = 4;
 
 var userSession;
