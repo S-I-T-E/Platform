@@ -36,14 +36,15 @@ block navbar
           li
             a.dropdown-button(href="#" data-activates='settingDropdown' data-constrainWidth="false" data-alignment="right" data-gutter="12" data-beloworigin="true")
               i.material-icons person
-            <ul id='settingDropdown' class='dropdown-content'>
-              <li><a href="#!">Account</a></li>
-              <li class="divider"></li>
-              <li><a href="#!">Settings</a></li>
-              <li class="divider"></li>
-              <li><a href="#!">Logout</a></li>
-            </ul>
-            
+            ul#settingDropdown.dropdown-content
+              li
+                a(href="#!") Account
+              li.divider
+              li
+                a(href="#!") Settings
+              li.divider
+              li
+                a(href="/logout") Logout
         ul#nav-mobile.left
           li
             a(href="#")
