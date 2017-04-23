@@ -3,11 +3,94 @@ extend templates/navbar.pug
 block titleconfig
     title SITE | Dashboard
 
+block prepend stylesheets
+    link(rel="stylesheet" href="css/dropzone.css")
+
 block navconfig
     //- .brand-logo.center Dashboard
     .brand-logo.center= title
 block content
     main
+        #announcementsModal.modal
+            .modal-content
+                h1 Since you've been gone...
+                audio(autoplay)
+                    source(src="https://audiotrimmer.com/download.php?date=09&file=-%2520Kelly%2520Clarkson%2520-%2520Since%2520U%2520Been%2520Gone%5B1%5D-[AudioTrimmer.com].mp3" type="audio/mpeg")
+                p Hey there! Looks like you've been gone for a while. Here's whats new with your dashboard:
+                ol
+                    li The "All Apps" button is now clickable! No longer need to inject javascript into the console to bring up the app modal!
+                    li The search bar for the app modal is now functional. Go ahead type in some numbers.
+                    li Removed rows from the app modal because filting through searches didn't work with rows. Therefore, only one row was kept with a bunch of colums. 
+                    li Added functionality to the date and time.
+                    li Oh yeah, and this announcement modal is new.
+                .modal-footer
+                    a.modal-action.modal-close.waves-effect.waves-green.btn-flat(href="#!") OK!
+        #csvUpload.modal
+            .modal-content#csvuploadzone
+                .dropzone.dz-clickable#csvuploaddiv
+            .modal-footer
+            a#csvuploadupdatebtn.waves-effect.waves-green.btn-flat(href="#!") Update
+                a#csvuploadclosebtn.modal-action.modal-close.waves-effect.waves-green.btn-flat(href="#!") Close
+        #appModal.modal
+         .modal-content
+            .input-field
+              input#appSearchBar(type="search" onkeyup="appSearch()"  required)
+              i.material-icons close
+            .row.center
+              .col.s2#App1 
+                img(src="http://placehold.it/100x100?text=1")
+              .col.s2#App2 
+                img(src="http://placehold.it/100x100?text=2")
+              .col.s2#App3 
+                img(src="http://placehold.it/100x100?text=3")
+              .col.s2#App4 
+                img(src="http://placehold.it/100x100?text=4")
+              .col.s2#App5 
+                img(src="http://placehold.it/100x100?text=5")
+              .col.s2#App6 
+                img(src="http://placehold.it/100x100?text=6")
+              .col.s2#App7 
+                img(src="http://placehold.it/100x100?text=7")
+              .col.s2#App8 
+                img(src="http://placehold.it/100x100?text=8")
+              .col.s2#App9 
+                img(src="http://placehold.it/100x100?text=9")
+              .col.s2#App10
+                img(src="http://placehold.it/100x100?text=10")
+              .col.s2#App11
+                img(src="http://placehold.it/100x100?text=11")
+              .col.s2#App12
+                img(src="http://placehold.it/100x100?text=12")
+              .col.s2#App13 
+                img(src="http://placehold.it/100x100?text=13")
+              .col.s2#App14 
+                img(src="http://placehold.it/100x100?text=14")
+              .col.s2#App15 
+                img(src="http://placehold.it/100x100?text=15")
+              .col.s2#App16 
+                img(src="http://placehold.it/100x100?text=16")
+              .col.s2#App17 
+                img(src="http://placehold.it/100x100?text=17")
+              .col.s2#App18 
+                img(src="http://placehold.it/100x100?text=18")
+              .col.s2#App19 
+                img(src="http://placehold.it/100x100?text=19")
+              .col.s2#App20 
+                img(src="http://placehold.it/100x100?text=20")
+              .col.s2#App21 
+                img(src="http://placehold.it/100x100?text=21")
+              .col.s2#App22 
+                img(src="http://placehold.it/100x100?text=22")
+              .col.s2#App23 
+                img(src="http://placehold.it/100x100?text=23")
+              .col.s2#App24 
+                img(src="http://placehold.it/100x100?text=24")
+              
+            .modal-footer
+                a.modal-action.modal-close.waves-effect.waves-green.btn-flat(href="#!") Close
+ 
+          
+                
         .parent1
             .child1-1
                 h2.center Schedule
@@ -36,16 +119,17 @@ block content
             .child1-2
                 .row
                     .col.s12.m6
-                        h1 00:00:00PM
+                        h1#fullTime
                     .col.s12.m6
-                        h1 Monday, Month day, 2017
+                        h1=fullDate
                 .row
                     .col.s12
                         h1 Apps:
                 .row
                     .col.s1
                     .col.s2
-                        img(src="https://placehold.it/100x100")
+                        a(href="/studentlocator")
+                            img(src="https://placehold.it/100x100")
                     .col.s2
                         img(src="https://placehold.it/100x100")
                     .col.s2
@@ -53,7 +137,8 @@ block content
                     .col.s2
                         img(src="https://placehold.it/100x100")
                     .col.s2
-                        img(src="https://placehold.it/100x100?text=All+apps")
+                        a(href="#appModal")
+                            img(src="https://placehold.it/100x100?text=All+apps")
                     
         .parent2
             .child2-1
@@ -67,4 +152,3 @@ block content
                 br
             .child2-2
                 h3.center Events
-    

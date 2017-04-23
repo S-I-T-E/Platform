@@ -12,7 +12,7 @@ block navbar
           a(href="#!name")
             span.white-text.name= fullname
           a(href="#!email")
-            span.white-text.email jdandturk@gmail.com
+            span.white-text.email email@mail.com
       li
         a(href="#!")
           i.material-icons cloud
@@ -43,6 +43,10 @@ block navbar
               li
                 a(href="#!") Settings
               li.divider
+              if (accesslevel=='3')
+                li
+                  a#uploadcsvbtn(href="#csvUpload") Upload CSVs
+                li.divider
               li
                 a(href="/logout") Logout
         ul#nav-mobile.left

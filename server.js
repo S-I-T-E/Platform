@@ -5,15 +5,24 @@ const parseurl = require('parseurl');
 const session = require('express-session');
 const mongoClient = require('mongodb').MongoClient;
 const MongoStore = require('connect-mongo')(express);
-var bodyParser = require('body-parser');
-var bcrypt = require('bcryptjs');
-
-
+const bodyParser = require('body-parser');
+const bcrypt = require('bcryptjs');
+const multer = require('multer');
+const spawn = require('child_process').spawn;
+var terminalProcess;
 const hostname = process.env.IP;
 const port = 8080;
 const saltRounds = 4;
 
 var userSession;
+var storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, 'uploads/')
+  },
+  filename: function(req, file, cb) {
+    cb(null, file.originalname)
+  }
+})
 
 server.set('view engine', 'pug')
 server.use(express.static('client'))
@@ -31,6 +40,10 @@ server.use(session({
   saveUninitialized: true
 }))
 
+var upload = multer({
+  storage: storage
+})
+
 var logger = function(req, res, next) {
   var date = new Date().toLocaleString();
   console.log(date + ' - Page requested: ' + req.path);
@@ -38,6 +51,7 @@ var logger = function(req, res, next) {
 }
 
 server.use(logger)
+
 
 server.get('/', function(req, res) {
   userSession = req.session;
@@ -70,11 +84,11 @@ server.post('/login', function(req, res) {
             collection = db.collection('info');
             collection.findOne({
               _id: user._id
-            }, function(err,result){
-            userSession.firstname = result.firstName
-            userSession.lastname = result.lastName
-            db.close();
-            res.redirect("/dashboard")
+            }, function(err, result) {
+              userSession.firstname = result.firstName
+              userSession.lastname = result.lastName
+              db.close();
+              res.redirect("/dashboard")
             })
           }
           else {
@@ -115,7 +129,13 @@ server.post('/register', function(req, res) {
             collection.insert({
               _id: uniqueID,
               firstName: req.body.first_name,
-              lastName: req.body.last_name
+              lastName: req.body.last_name,
+              userSettings: {
+                'fav1': '',
+                'fave2': '',
+                'fave3': '',
+                'fave4': ''
+              }
             }, function(error, result) {
               db.close();
             });
@@ -138,15 +158,149 @@ server.get('/logout', function(req, res) {
   res.redirect('/')
 })
 
+server.post('/studentSearch', function(req, res) {
+  var query = req.body.search;
+  console.log(query);
+  mongoClient.connect("mongodb://localhost:27017/students", function(error, db) {
+    if (!error) {
+      console.log("Connected successfully to MongoDB server");
+      var collection = db.collection('demographics');
+      collection.find({
+         $or: [{"Student ID":parseInt(query)}, {"Student Full Name":{ $in: [ new RegExp(query.toUpperCase()) ] } }] 
+      }, {
+        'First Name': true,
+        'Last Name': true,
+        Grade: true,
+        'Student ID': true,
+        _id: false
+      }).toArray(function(err, docs) {
+        console.log("retrieved records:");
+        console.log(docs);
+        res.send(docs)
+      });
+      db.close();
+    }
+  });
+});
+server.get('/studentlocator', function(req, res) {
+  res.render('studentlocator')
+})
+
+server.post('/uploadCSV', upload.array('3v7465OC$UsX', 2), function(req, res) {
+  console.dir(req.files);
+  res.send(200)
+  console.log("UPLOADED")
+})
+
+server.post('/updateDB', function(req, res) {
+  mongoClient.connect("mongodb://localhost:27017/students", function(error, db) {
+    if (!error) {
+      console.log("Connected successfully to MongoDB server");
+      var collection = db.collection('demographics');
+      console.log("about to remove collection...")
+      collection.remove({})
+      db.close();
+      console.log("collection removed.")
+      console.log("Now about to spawn child process...")
+      terminalProcess = spawn('mongoimport', ['-d=students', '-c=demographics', '--type=csv', '--headerline', '--file=uploads/Demographics.csv']);
+
+      terminalProcess.stdout.on('data', data => {
+        console.log(`stdout: ${data}`);
+      });
+
+      terminalProcess.stderr.on('data', data => {
+        console.log(`stderr: ${data}`);
+      });
+
+      terminalProcess.on('close', code => {
+        console.log(`child process exited with code ${code}`);
+      });
+    }
+    else {
+      console.dir(error);
+      res.send(error);
+    }
+  });
+})
 server.get('/dashboard', function(req, res) {
   userSession = req.session;
   if (!userSession.user) {
     res.redirect('/login');
   }
   else {
+    var d = new Date();
+    var day = d.getDay();
+    var m = d.getMonth();
+    var date = d.getDate();
+    var y = d.getFullYear();
+    switch (day) {
+      case 0:
+        day = "Sunday";
+        break;
+      case 1:
+        day = "Monday";
+        break;
+      case 2:
+        day = "Tuesday";
+        break;
+      case 3:
+        day = "Wednesday";
+        break;
+      case 4:
+        day = "Thursday";
+        break;
+      case 5:
+        day = "Friday";
+        break;
+      case 6:
+        day = "Saturday";
+    }
+    switch (m) {
+      case 0:
+        m = "January";
+        break;
+      case 1:
+        m = "February";
+        break;
+      case 2:
+        m = "March";
+        break;
+      case 3:
+        m = "April";
+        break;
+      case 4:
+        m = "May";
+        break;
+      case 5:
+        m = "June";
+        break;
+      case 6:
+        m = "July";
+        break;
+      case 7:
+        m = "August";
+        break;
+      case 8:
+        m = "September";
+        break;
+      case 9:
+        m = "October";
+        break;
+      case 10:
+        m = "November";
+        break;
+      case 11:
+        m = "December";
+        break;
+      default:
+        m = "Invalid month";
+    }
+    var dateStr = day + ", " + m + " " + date + ", " + y;
     res.render('dashboard', {
-      title: 'Hello '+userSession.firstname+'! Your current level of access is: ' + userSession.accessLevel,
-      fullname: userSession.firstname+" "+userSession.lastname
+      title: 'Hello ' + userSession.firstname + '! Your current level of access is: ' + userSession.accessLevel,
+      accesslevel: userSession.accessLevel,
+      fullname: userSession.firstname + " " + userSession.lastname,
+      fullDate: dateStr
     })
   }
 })

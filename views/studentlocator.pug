@@ -1,0 +1,24 @@
+extend templates/navbar.pug
+
+block content
+    #announcementsModal.modal
+            .modal-content
+                h1 Student Locator
+                p HResult will go here somehwow...
+                .modal-footer
+                    a.modal-action.modal-close.waves-effect.waves-green.btn-flat(href="#!") Close
+    .container 
+            .row
+                .col.s12
+                    form#studentLocatorSearch
+                        input(type="text" id="search" placeholder="Search...")
+            .row
+                .col.s12
+                    table.hide
+                      thead
+                        <tr>
+                            <th>Name</th>
+                            <th>Grade</th>
+                            <th>ID</th>
+                        </tr>
+                      tbody#studentSearchResults
