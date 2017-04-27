@@ -2,37 +2,83 @@ Dropzone.autoDiscover = false;
 $(function() {
     $(".button-collapse").sideNav();
     $('select').material_select();
-    $('.modal').modal({dismissible: false});
+    $('.modal').modal({});
+    $('#announcementsModal').modal({
+        dismissible: false,
+        complete: function() {
+            $.get('/announcementOpened');
+        }
+    });
     $('#announcementsModal').modal('open');
     var myVar = setInterval(time, 1000);
+
     function time() {
         var d = new Date();
         $("#fullTime").html(d.toLocaleTimeString());
     }
-    $('#uploadcsvbtn').click(function(){
-        $("div#csvuploaddiv").dropzone({ url: "/uploadCSV", paramName: "3v7465OC$UsX", acceptedFiles:".csv",  dictDefaultMessage:"Drop files or click here to upload. Only CSVs are accepted."});
+    $('#uploadcsvbtn').click(function() {
+        $("div#csvuploaddiv").dropzone({
+            url: "/uploadCSV",
+            paramName: "3v7465OC$UsX",
+            acceptedFiles: ".csv",
+            dictDefaultMessage: "Drop files or click here to upload. Only CSVs are accepted."
+        });
     })
-    $('#csvuploadupdatebtn').click(function(){
-        $.post( "/updateDB", function( data ) {
-        console.log(data)
-});
+    $('#csvuploadupdatebtn').click(function() {
+        $.post("/updateDB", function(data) {
+            console.log(data)
+        });
     })
-    $('#csvuploadclosebtn').click(function(){
+    $('#loginForm').submit(function(e) {
+        e.preventDefault();
+        $('#loginForm input[type=password]').removeClass('invalid');
+        $('#loginForm input[type=text]').removeClass('invalid');
+        $.post("/login", form_to_json($('#loginForm')))
+        .done(function(){
+            window.location.href='/dashboard';
+        })
+            .fail(function(response) {
+                $("#snackbar").html(response.responseText)
+                if (response.responseText.includes("password")) {
+                    $('#loginForm input[type=password]').addClass('invalid');
+                }
+                else if (response.responseText.includes("username")) {
+                    $('#loginForm input[type=text]').addClass('invalid');
+                }
+                $("#snackbar").addClass('show')
+                setTimeout(function() {
+                    $("#snackbar").removeClass('show')
+                }, 3000);
+            });
+    })
+    $('#csvuploadclosebtn').click(function() {
         $("#csvuploadzone").html('<div class="dropzone dz-clickable" id="csvuploaddiv"></div>');
     })
-    
+
     $('#studentLocatorSearch').submit(function(e) {
-    e.preventDefault();
-    var search = $('#search').val();
-    $('#studentSearchResults').html('');
-        $.post('/studentSearch',{search: search},function(data){
+        e.preventDefault();
+        var search = $('#search').val();
+        $('#studentSearchResults').html('');
+        $.post('/studentSearch', {
+            search: search
+        }, function(data) {
             console.log(data[0])
-      for(var x = 0; x < data.length; x++){
-          $('#studentSearchResults').append('<a><tr><td>'+data[x]['First Name']+" "+data[x]['Last Name']+'</td><td>'+data[x].Grade+'</td><td>'+data[x]['Student ID']+'</td></tr></a>');
-      }
-      $('table').removeClass("hide");
+            for (var x = 0; x < data.length; x++) {
+                $('#studentSearchResults').append('<tr id="' + data[x]['Student ID'] + '"><td>' + data[x]['First Name'] + " " + data[x]['Last Name'] + '</td><td>' + data[x].Grade + '</td><td>' + data[x]['Student ID'] + '</td></tr>');
+            }
+            $('table').removeClass("hide");
+        });
     });
-});
+    $("#studentSearchResults").on("click", "tr", function(event) {
+        $.post('/displayStudentInfo', {
+            studentID: $(this).attr('id')
+        }, function(data) {
+            $('#studentLocatorResultsName').html(data.name);
+            $('#studentLocatorResultsGradeID').html(data.grade + " " + data.id);
+            $('#studentLocatorResultsModal').modal('open');
+        });
+    });
+
 })
 
 function appSearch() {
@@ -45,6 +91,9 @@ function appSearch() {
     }
 }
 
-function s(){
-    
+function form_to_json(selector) {
+    var ary = $(selector).serializeArray();
+    var obj = {};
+    for (var a = 0; a < ary.length; a++) obj[ary[a].name] = ary[a].value;
+    return obj;
 }

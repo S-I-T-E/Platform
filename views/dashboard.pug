@@ -11,20 +11,21 @@ block navconfig
     .brand-logo.center= title
 block content
     main
-        #announcementsModal.modal
-            .modal-content
-                h1 Since you've been gone...
-                audio(autoplay)
-                    source(src="https://audiotrimmer.com/download.php?date=09&file=-%2520Kelly%2520Clarkson%2520-%2520Since%2520U%2520Been%2520Gone%5B1%5D-[AudioTrimmer.com].mp3" type="audio/mpeg")
-                p Hey there! Looks like you've been gone for a while. Here's whats new with your dashboard:
-                ol
-                    li The "All Apps" button is now clickable! No longer need to inject javascript into the console to bring up the app modal!
-                    li The search bar for the app modal is now functional. Go ahead type in some numbers.
-                    li Removed rows from the app modal because filting through searches didn't work with rows. Therefore, only one row was kept with a bunch of colums. 
-                    li Added functionality to the date and time.
-                    li Oh yeah, and this announcement modal is new.
-                .modal-footer
-                    a.modal-action.modal-close.waves-effect.waves-green.btn-flat(href="#!") OK!
+        if (newAnnouncement==true)
+            #announcementsModal.modal
+                .modal-content
+                    h1 Since you've been gone...
+                    audio(autoplay)
+                        source(src="https://audiotrimmer.com/download.php?date=09&file=-%2520Kelly%2520Clarkson%2520-%2520Since%2520U%2520Been%2520Gone%5B1%5D-[AudioTrimmer.com].mp3" type="audio/mpeg")
+                    p Hey there! Looks like you've been gone for a while. Here's whats new with your dashboard:
+                    ol
+                        li The "All Apps" button is now clickable! No longer need to inject javascript into the console to bring up the app modal!
+                        li The search bar for the app modal is now functional. Go ahead type in some numbers.
+                        li Removed rows from the app modal because filting through searches didn't work with rows. Therefore, only one row was kept with a bunch of colums. 
+                        li Added functionality to the date and time.
+                        li Oh yeah, and this announcement modal is new.
+                    .modal-footer
+                        a.modal-action.modal-close.waves-effect.waves-green.btn-flat(href="#!") OK!
         #csvUpload.modal
             .modal-content#csvuploadzone
                 .dropzone.dz-clickable#csvuploaddiv
@@ -37,7 +38,7 @@ block content
               input#appSearchBar(type="search" onkeyup="appSearch()"  required)
               i.material-icons close
             .row.center
-              .col.s2#App1 
+              .col.s2#StudentLocator 
                 img(src="http://placehold.it/100x100?text=1")
               .col.s2#App2 
                 img(src="http://placehold.it/100x100?text=2")
@@ -111,10 +112,10 @@ block content
                             td Geometry
                             td.right-align 12:00pm
                         tr 
-                            td Other
+                            td Planning Period
                             td.right-align 2:00pm
                         tr
-                            td Just filling
+                            td AP Calculus
                             td.right-align 4:30pm
             .child1-2
                 .row

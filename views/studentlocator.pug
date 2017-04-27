@@ -1,10 +1,16 @@
 extend templates/navbar.pug
 
+block navconfig
+    //- .brand-logo.center Dashboard
+    .brand-logo.center Student Locator
+    
+
 block content
-    #announcementsModal.modal
+    #studentLocatorResultsModal.modal
             .modal-content
-                h1 Student Locator
-                p HResult will go here somehwow...
+                h3 Student Locator
+                p#studentLocatorResultsName
+                p#studentLocatorResultsGradeID
                 .modal-footer
                     a.modal-action.modal-close.waves-effect.waves-green.btn-flat(href="#!") Close
     .container 
@@ -14,11 +20,10 @@ block content
                         input(type="text" id="search" placeholder="Search...")
             .row
                 .col.s12
-                    table.hide
+                    table.hide.highlight
                       thead
-                        <tr>
-                            <th>Name</th>
-                            <th>Grade</th>
-                            <th>ID</th>
-                        </tr>
+                        tr
+                            th Name
+                            th Grade
+                            th ID
                       tbody#studentSearchResults

@@ -1,1 +1,99 @@
-function appSearch(){for(var e=0;e<25;e++)str="App"+e,str.indexOf($("#appSearchBar").val())>=0?$("#App"+e).css("display","block"):$("#App"+e).css("display","none")}function s(){}Dropzone.autoDiscover=!1,$(function(){function e(){var e=new Date;$("#fullTime").html(e.toLocaleTimeString())}$(".button-collapse").sideNav(),$("select").material_select(),$(".modal").modal({dismissible:!1}),$("#announcementsModal").modal("open");setInterval(e,1e3);$("#uploadcsvbtn").click(function(){$("div#csvuploaddiv").dropzone({url:"/uploadCSV",paramName:"3v7465OC$UsX",acceptedFiles:".csv",dictDefaultMessage:"Drop files or click here to upload. Only CSVs are accepted."})}),$("#csvuploadupdatebtn").click(function(){$.post("/updateDB",function(e){console.log(e)})}),$("#csvuploadclosebtn").click(function(){$("#csvuploadzone").html('<div class="dropzone dz-clickable" id="csvuploaddiv"></div>')}),$("#studentLocatorSearch").submit(function(e){e.preventDefault();var t=$("#search").val();$("#studentSearchResults").html(""),$.post("/studentSearch",{search:t},function(e){console.log(e[0]);for(var t=0;t<e.length;t++)$("#studentSearchResults").append("<a><tr><td>"+e[t]["First Name"]+" "+e[t]["Last Name"]+"</td><td>"+e[t].Grade+"</td><td>"+e[t]["Student ID"]+"</td></tr></a>");$("table").removeClass("hide")})})});
+Dropzone.autoDiscover = false;
+$(function() {
+    $(".button-collapse").sideNav();
+    $('select').material_select();
+    $('.modal').modal({});
+    $('#announcementsModal').modal({
+        dismissible: false,
+        complete: function() {
+            $.get('/announcementOpened');
+        }
+    });
+    $('#announcementsModal').modal('open');
+    var myVar = setInterval(time, 1000);
+
+    function time() {
+        var d = new Date();
+        $("#fullTime").html(d.toLocaleTimeString());
+    }
+    $('#uploadcsvbtn').click(function() {
+        $("div#csvuploaddiv").dropzone({
+            url: "/uploadCSV",
+            paramName: "3v7465OC$UsX",
+            acceptedFiles: ".csv",
+            dictDefaultMessage: "Drop files or click here to upload. Only CSVs are accepted."
+        });
+    })
+    $('#csvuploadupdatebtn').click(function() {
+        $.post("/updateDB", function(data) {
+            console.log(data)
+        });
+    })
+    $('#loginForm').submit(function(e) {
+        e.preventDefault();
+        $('#loginForm input[type=password]').removeClass('invalid');
+        $('#loginForm input[type=text]').removeClass('invalid');
+        $.post("/login", form_to_json($('#loginForm')))
+        .done(function(){
+            window.location.href='/dashboard';
+        })
+            .fail(function(response) {
+                $("#snackbar").html(response.responseText)
+                if (response.responseText.includes("password")) {
+                    $('#loginForm input[type=password]').addClass('invalid');
+                }
+                else if (response.responseText.includes("username")) {
+                    $('#loginForm input[type=text]').addClass('invalid');
+                }
+                $("#snackbar").addClass('show')
+                setTimeout(function() {
+                    $("#snackbar").removeClass('show')
+                }, 3000);
+            });
+    })
+    $('#csvuploadclosebtn').click(function() {
+        $("#csvuploadzone").html('<div class="dropzone dz-clickable" id="csvuploaddiv"></div>');
+    })
+
+    $('#studentLocatorSearch').submit(function(e) {
+        e.preventDefault();
+        var search = $('#search').val();
+        $('#studentSearchResults').html('');
+        $.post('/studentSearch', {
+            search: search
+        }, function(data) {
+            console.log(data[0])
+            for (var x = 0; x < data.length; x++) {
+                $('#studentSearchResults').append('<tr id="' + data[x]['Student ID'] + '"><td>' + data[x]['First Name'] + " " + data[x]['Last Name'] + '</td><td>' + data[x].Grade + '</td><td>' + data[x]['Student ID'] + '</td></tr>');
+            }
+            $('table').removeClass("hide");
+        });
+    });
+    $("#studentSearchResults").on("click", "tr", function(event) {
+        $.post('/displayStudentInfo', {
+            studentID: $(this).attr('id')
+        }, function(data) {
+            $('#studentLocatorResultsName').html(data.name);
+            $('#studentLocatorResultsGradeID').html(data.grade + " " + data.id);
+            $('#studentLocatorResultsModal').modal('open');
+        });
+    });
+
+})
+
+function appSearch() {
+    for (var x = 0; x < 25; x++) {
+        str = "App" + x
+        if (str.indexOf($('#appSearchBar').val()) >= 0) {
+            $('#App' + x).css('display', 'block')
+        }
+        else $('#App' + x).css('display', 'none')
+    }
+}
+
+function form_to_json(selector) {
+    var ary = $(selector).serializeArray();
+    var obj = {};
+    for (var a = 0; a < ary.length; a++) obj[ary[a].name] = ary[a].value;
+    return obj;
+}
