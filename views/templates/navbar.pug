@@ -2,29 +2,30 @@ extend htmlboilerplate.pug
 
 block navbar
   header
-    ul#slide-out.side-nav
-      li
-        .userView
-          .background
-            img(src="images/office.jpg")
-          a(href="#!user")
-            img.circle(src="images/yuna.jpg")
-          a(href="#!name")
-            span.white-text.name= fullname
-          a(href="#!email")
-            span.white-text.email email@mail.com
-      li
-        a(href="#!")
-          i.material-icons cloud
-          First Link With Icon
-      li
-        a(href="#!") Second Link
-      li
-        .divider 
-      li
-        a.subheader Subheader
-      li
-        a.waves-effect(href="#!") Third Link With Waves
+    block slideOutNav
+      ul#slide-out.side-nav
+        li
+          .userView
+            .background
+              img(src="images/office.jpg")
+            a(href="#!user")
+              img.circle(src="images/yuna.jpg")
+            a(href="#!name")
+              span.white-text.name= fullname
+            a(href="#!email")
+              span.white-text.email email@mail.com
+        li
+          a(href="#!")
+            i.material-icons cloud
+            First Link With Icon
+        li
+          a(href="#!") Second Link
+        li
+          .divider 
+        li
+          a.subheader Subheader
+        li
+          a.waves-effect(href="#!") Third Link With Waves
     nav
       .nav-wrapper.z-depth-3
         block navconfig
@@ -49,7 +50,8 @@ block navbar
                 li.divider
               li
                 a(href="/logout") Logout
-        ul#nav-mobile.left
-          li
-            a(href="#")
-              i.material-icons.button-collapse(data-activates="slide-out") menu 
+        block leftNavIcon
+          ul#nav-mobile.left
+            li
+              a(href="#")
+                i.material-icons.button-collapse(data-activates="slide-out") menu 

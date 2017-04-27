@@ -1,29 +1,34 @@
 extend templates/navbar.pug
 
+block slideOutNav
 block navconfig
-    //- .brand-logo.center Dashboard
     .brand-logo.center Student Locator
-    
 
+block leftNavIcon
+    ul#nav-mobile.left
+        li
+            a(href="/")
+                i.material-icons(style="margin: 0 18px;") home   
 block content
-    #studentLocatorResultsModal.modal
-            .modal-content
-                h3 Student Locator
-                p#studentLocatorResultsName
-                p#studentLocatorResultsGradeID
-                .modal-footer
-                    a.modal-action.modal-close.waves-effect.waves-green.btn-flat(href="#!") Close
-    .container 
-            .row
-                .col.s12
-                    form#studentLocatorSearch
-                        input(type="text" id="search" placeholder="Search...")
-            .row
-                .col.s12
-                    table.hide.highlight
-                      thead
-                        tr
-                            th Name
-                            th Grade
-                            th ID
-                      tbody#studentSearchResults
+    main
+        #studentLocatorResultsModal.modal
+                .modal-content
+                    h3 Student Locator
+                    p#studentLocatorResultsName
+                    p#studentLocatorResultsGradeID
+                    .modal-footer
+                        a.modal-action.modal-close.waves-effect.waves-green.btn-flat(href="#!") Close
+        .container 
+                .row
+                    .col.s12
+                        form#studentLocatorSearch
+                            input(type="text" id="search" placeholder="Search...")
+                .row
+                    .col.s12
+                        table.hide.highlight
+                          thead
+                            tr
+                                th Name
+                                th Grade
+                                th ID
+                          tbody#studentSearchResults    

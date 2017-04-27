@@ -398,6 +398,14 @@ input[type="text"] {
 input[type="text"]:focus {
   width: 100%; }
 
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column; }
+
+main {
+  flex: 1 0 auto; }
+
 input[type="text"] {
   width: 130px;
   -webkit-transition: width 0.4s ease-in-out;
@@ -405,5 +413,13 @@ input[type="text"] {
 
 input[type="text"]:focus {
   width: 100%; }
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column; }
+
+main {
+  flex: 1 0 auto; }
 
 /*# sourceMappingURL=main.css.map */
