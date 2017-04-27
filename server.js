@@ -204,8 +204,6 @@ server.post('/studentSearch', function(req, res) {
         'Student ID': true,
         _id: false
       }).toArray(function(err, docs) {
-        console.log("retrieved records:");
-        console.log(docs);
         res.send(docs)
       });
       db.close();
@@ -232,7 +230,7 @@ server.post('/displayStudentInfo', function(req, res) {
         'Student ID': parseInt(id)
       }, function(err, document) {
         res.send({
-          name: document["First Name"] + " " + document["First Name"],
+          name: document["First Name"] + " " + document["Last Name"],
           id: document["Student ID"],
           grade: document.Grade
         })

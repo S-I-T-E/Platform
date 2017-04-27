@@ -13,22 +13,24 @@ block content
     main
         #studentLocatorResultsModal.modal
                 .modal-content
-                    h3 Student Locator
-                    p#studentLocatorResultsName
+                    h4#studentLocatorResultsName
                     p#studentLocatorResultsGradeID
                     .modal-footer
                         a.modal-action.modal-close.waves-effect.waves-green.btn-flat(href="#!") Close
         .container 
-                .row
-                    .col.s12
-                        form#studentLocatorSearch
-                            input(type="text" id="search" placeholder="Search...")
-                .row
-                    .col.s12
-                        table.hide.highlight
-                          thead
-                            tr
-                                th Name
-                                th Grade
-                                th ID
-                          tbody#studentSearchResults    
+            br
+            br
+            .row
+                .col.s12
+                    form#studentLocatorSearch
+                        input(type="text" id="search" placeholder="Search...")
+            .row
+                .col.s12
+                    #studentSearchResultsError
+                    table.hide.highlight
+                      thead
+                        tr
+                            th Name
+                            th Grade
+                            th ID
+                      tbody#studentSearchResults    

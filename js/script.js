@@ -34,9 +34,9 @@ $(function() {
         $('#loginForm input[type=password]').removeClass('invalid');
         $('#loginForm input[type=text]').removeClass('invalid');
         $.post("/login", form_to_json($('#loginForm')))
-        .done(function(){
-            window.location.href='/dashboard';
-        })
+            .done(function() {
+                window.location.href = '/dashboard';
+            })
             .fail(function(response) {
                 $("#snackbar").html(response.responseText)
                 if (response.responseText.includes("password")) {
@@ -58,23 +58,39 @@ $(function() {
     $('#studentLocatorSearch').submit(function(e) {
         e.preventDefault();
         var search = $('#search').val();
-        $('#studentSearchResults').html('');
-        $.post('/studentSearch', {
-            search: search
-        }, function(data) {
-            console.log(data[0])
-            for (var x = 0; x < data.length; x++) {
-                $('#studentSearchResults').append('<tr id="' + data[x]['Student ID'] + '"><td>' + data[x]['First Name'] + " " + data[x]['Last Name'] + '</td><td>' + data[x].Grade + '</td><td>' + data[x]['Student ID'] + '</td></tr>');
-            }
-            $('table').removeClass("hide");
-        });
+        if (/^[a-zA-Z0-9- ]*$/.test(search) == true && search !== "") {
+            $('#studentSearchResultsError').html('');
+            $('#studentSearchResults').html('');
+            $.post('/studentSearch', {
+                search: search
+            }, function(data) {
+                if (data.length > 0) {
+                    for (var x = 0; x < data.length; x++) {
+                        $('#studentSearchResults').append('<tr id="' + data[x]['Student ID'] + '"><td>' + data[x]['First Name'] + " " + data[x]['Last Name'] + '</td><td>' + data[x].Grade + '</td><td>' + data[x]['Student ID'] + '</td></tr>');
+                    }
+                    $('table').removeClass("hide");
+                }
+                else {
+                    $('table').addClass("hide");
+                    $('#studentSearchResultsError').html('No students were found.');
+                }
+
+            });
+        }
+        else {
+            console.log("aoo")
+            $('#studentSearchResults').html('');
+            $('table').addClass("hide");
+            $('#studentSearchResultsError').html('Please enter a valid search request');
+        }
+
     });
     $("#studentSearchResults").on("click", "tr", function(event) {
         $.post('/displayStudentInfo', {
             studentID: $(this).attr('id')
         }, function(data) {
             $('#studentLocatorResultsName').html(data.name);
-            $('#studentLocatorResultsGradeID').html(data.grade + " " + data.id);
+            $('#studentLocatorResultsGradeID').html("Grade " + data.grade + " ID: " + data.id);
             $('#studentLocatorResultsModal').modal('open');
         });
     });
